@@ -1,0 +1,38 @@
+html {
+	/*background is money-themed*/
+	background: url(http://thumbs.dreamstime.com/t/dollar-sign-background-money-concept-47618527.jpg) repeat fixed;
+}
+
+#add, #list {
+	background-color: rgba(43, 159, 209, 0.7);
+	margin-right: auto;
+	margin-left:auto;
+	height:200px;
+	width: 100%;
+	border-radius: 15px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+#list {
+	min-height: 200px;
+	height:100%;
+}
+
+#list-header{
+	font-weight: bold;
+	height: 20px;
+}
+
+table {
+	margin-left: auto;
+	margin-right:auto;
+}
+
+td {
+	width: 100px;
+	overflow: auto;
+	border: 1px solid black;
+	margin: 0;
+	padding: 5px;
+}

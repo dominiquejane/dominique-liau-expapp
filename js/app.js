@@ -1,4 +1,1 @@
-angular.module('ExpApp').config(function() {
-
-
-})
+angular.module('ExpApp', []);

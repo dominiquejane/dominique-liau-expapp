@@ -1,23 +1,33 @@
-angular.module('ExpApp').controller('mainCtrl', function($scope) {
+angular.module('ExpApp').controller('mainCtrl', function($scope, mainService) {
 
-	$scope.list = [];
+	//call populateExpenses() to make sure list is up to date.
+	$scope.populateExpenses = function() {
+		$scope.list = mainService.populate();
+	}
 
-	$scope.Item={
-		merchant: "name",
-		amount: "number",
-		date: "date",
-		comments : "string"
-	};
-
+	//add an expense and refresh list
 	$scope.addExpense = function(){
-		$scope.Item.merchant = $scope.merchant;
-		$scope.Item.amount = $scope.amount;
-		$scope.Item.date = $scope.date;
-		$scope.Item.comments = $scope.comments;
+		mainService.add($scope.expense);
 
-		$scope.list.push($scope.Item);
+		//clear input fields
+		$scope.expense.merchant = "";
+		$scope.expense.amount = "";
+		$scope.expense.date = "";
+		$scope.expense.comments = "";
 
-		console.log($scope.list);
+		$scope.populateExpenses();
+	}
+
+	//change status and remove buttons
+	$scope.reimburseExpense = function(item) {
+		mainService.reimburse(item.$$hashKey);
+		$scope.populateExpenses(); 
+	}
+
+	//remove an expense
+	$scope.removeExpense = function(itemId) {
+		mainService.remove(itemId);
+		$scope.populateExpenses();
 	}
 		
 })
