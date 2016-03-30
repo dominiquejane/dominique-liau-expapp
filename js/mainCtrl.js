@@ -5,17 +5,33 @@ angular.module('ExpApp').controller('mainCtrl', function($scope, mainService) {
 		$scope.list = mainService.populate();
 	}
 
+	//validate expense amount, accepts two different formats
+	$scope.numberValidation = function(number) {
+		if (/^\d+$/.test(number)){
+			$scope.expense.amount = number + ".00";
+			return true;
+		}
+		else if (/[0-9]{1,}\.[0-9]{2,2}/.test(number) === false) {
+			alert("Your input for the expense amount is invalid or empty. \n Please input amount using one of the following formats: \n XX.XX \n XX \n Do not use any other characters except for numbers and/or a period.");
+			return false;
+		}
+		else return true;
+	}
+
 	//add an expense and refresh list
 	$scope.addExpense = function(){
-		mainService.add($scope.expense);
+		if ($scope.numberValidation($scope.expense.amount) === true){
+			mainService.add($scope.expense);
 
-		//clear input fields
-		$scope.expense.merchant = "";
-		$scope.expense.amount = "";
-		$scope.expense.date = "";
-		$scope.expense.comments = "";
+			//clear input fields
+			$scope.expense.merchant = "";
+			$scope.expense.amount = "";
+			$scope.expense.date = "";
+			$scope.expense.comments = "";
 
-		$scope.populateExpenses();
+			$scope.populateExpenses();
+		}
+		
 	}
 
 	//change status and remove buttons
@@ -29,5 +45,21 @@ angular.module('ExpApp').controller('mainCtrl', function($scope, mainService) {
 		mainService.remove(itemId);
 		$scope.populateExpenses();
 	}
+
+	// //edit an expense
+	// $scope.editExpense = function(itemId) {
+	// 	mainService.edit(itemId);
+	// }
+
+	// //save edit to expenses
+	// $scope.saveExpense = function(item) {
+	// 	mainService.save(item);
+	// 	$scope.populateExpenses();
+	// }
+
+	//sorting variables
+	$scope.sortType = '';
+	$scope.sortValue = false;
+	
 		
 })

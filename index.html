@@ -16,8 +16,8 @@
 		<div>
 			<form ng-submit="addExpense()">
 				Merchant : <input type="text" ng-model='expense.merchant'> <br/>
-				Total expense amount (including tax) : <input type="text" ng-model='expense.amount'> <br/>
-				Date the expense occurred : <input type="text" placeholder="mm/dd/yyyy" ng-model='expense.date'> <br/>
+				Total expense amount (including tax) : $<input type="text" ng-model='expense.amount'> <br/>
+				Date the expense occurred : <input type="date" ng-model='expense.date'> <br/>
 				Comments : <input type="text" ng-model='expense.comments'> <br/>
 				<button type="submit">Add Expense</button>
 			</form>
@@ -26,30 +26,62 @@
 
 	<div id="list">
 		<h1>List of expenses</h1>
-			<table>
+			<table> 
 				<!-- table headers -->
 				<tr id="list-header">
-					<td>Merchant</td>
-					<td>Amount</td>
-					<td>Date</td>
-					<td>Comments</td>
-					<td>Status</td>
+					<td>
+						<a href="#" ng-click="sortType = 'merchant'; sortValue = !sortValue">
+							Merchant
+						</a>
+					</td>
+					<td>
+						<a href="#" ng-click="sortType = 'amount'; sortValue = !sortValue">
+							Amount
+						</a>
+					</td>
+					<td>
+						<a href="#" ng-click="sortType = 'date'; sortValue = !sortValue">
+							Date
+						</a>
+					</td>
+					<td>
+						<a href="#" ng-click="sortType = 'comments'; sortValue = !sortValue">
+							Comments
+						</a>
+					</td>
+					<td>
+						<a href="#" ng-click="sortType = 'status'; sortValue = !sortValue">
+							Status
+						</a>
+					</td>
 					<td>Actions</td>
 				</tr>
-				<!-- expenses displayed here, loops through expense items inside list array -->
-				<tr ng-repeat="item in list" contenteditable="" name="editable">
-					<td>{{item.merchant}}</td>
-					<td>${{item.amount}}</td>
-					<td>{{item.date}}</td>
-					<td>{{item.comments}}</td>
+				<!-- expenses displayed here, loops through expense items inside list array, filtering options available -->
+				<tr ng-repeat="item in list | orderBy:sortType:sortValue"  name="editable" contenteditable="" > 
+					<td >{{item.merchant}}</td>
+					<td >${{item.amount}}</td>
+					<td >
+						<input type="date" ng-model='item.date' value='item.date' name="dateValue">
+					</td>
+					<td >{{item.comments}}</td>
 					<td contenteditable="false">
 						{{item.status}}
 					</td>
 					<td contenteditable="false">
 						<!-- Reimbursed button removes editability (which is done on the service).-->
 						<!-- Reimbursed button removes all buttons, therefore, expense cannot be removed once status has been changed to "reimbursed "-->
-						<button ng-click="reimburseExpense(item)" ng-show="item.newStatus">Reimbursed</button>
-						<button ng-click="removeExpense(item.$$hashKey)" ng-show="item.newStatus">Remove</button>
+						<button ng-click="reimburseExpense(item)" ng-show="item.newStatus">
+							Reimbursed
+						</button>
+						<!-- <button ng-click="editExpense(item.$$hashKey)" ng-show="item.newStatus">
+							Edit
+						</button>
+						<button ng-click="saveExpense(item)" ng-show="item.newStatus">
+							Save
+						</button> -->
+						<button ng-click="removeExpense(item.$$hashKey)" ng-show="item.newStatus">
+							Remove
+						</button>
 					</td>
 				</tr>
 			</table>
@@ -58,7 +90,7 @@
 	
 
 	<!-- angular -->
-	<script src="angular.js"></script>
+	<script src="angular.min.js"></script>
 	<!-- js files -->
 	<script src="js/app.js"></script>
 	<script src="js/mainCtrl.js"></script>	
